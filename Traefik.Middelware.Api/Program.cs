@@ -58,7 +58,7 @@ app.UseHttpsRedirection();
 app.UseOutputCache();
 
 app.MapGet("/geo-filter", async (
-    [FromQuery] string? ipFromQueryString,
+    [FromQuery(Name = "ip")] string? ipFromQueryString,
     [FromQuery] string allowedCountries,
     [FromHeader(Name = "X-Forwarded-For")] string? ipFromHeader,
     HttpContext context,

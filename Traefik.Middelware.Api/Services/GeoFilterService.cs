@@ -15,6 +15,10 @@ namespace Traefik.Middelware.Api.Services
             IEnumerable<string> allowedCountries,
             CancellationToken cancellationToken)
         {
+            if (string.IsNullOrEmpty(ip))
+            {
+                throw new ArgumentNullException(nameof(ip));
+            }
 
             var country = await cache.GetOrCreateAsync(
                 ip,
@@ -32,6 +36,11 @@ namespace Traefik.Middelware.Api.Services
             string ip,
             CancellationToken cancellationToken)
         {
+            if (string.IsNullOrEmpty(ip))
+            {
+                throw new ArgumentNullException(nameof(ip));
+            }
+
             var httpClient = httpClientFactory.CreateClient();
 
             try
