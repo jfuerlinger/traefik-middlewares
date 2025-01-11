@@ -58,12 +58,20 @@ app.UseHttpsRedirection();
 app.UseOutputCache();
 
 app.MapGet("/geo-filter", async (
-    [FromQuery] string ip,
+    [FromQuery] string? ipFromQueryString,
     [FromQuery] string allowedCountries,
+    [FromHeader(Name = "X-Forwarded-For")] string? ipFromHeader,
     HttpContext context,
     GeoFilterService geoFilterService,
+    ILogger<Program> logger,
     CancellationToken cancellationToken) =>
 {
+    var ip = ipFromHeader
+                ?? ipFromQueryString
+                ?? context?.Connection?.RemoteIpAddress?.ToString()
+                ?? throw new InvalidOperationException("Can't resolve ip to check!");
+
+    logger.LogDebug($"Checking IP '{ip}' against '{allowedCountries}' ...");
 
     var countries = allowedCountries
                         .Split(',', StringSplitOptions.RemoveEmptyEntries)
