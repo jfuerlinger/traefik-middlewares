@@ -41,7 +41,7 @@ namespace Traefik.Middelware.Api.Services
                 var response = await httpClient.GetFromJsonAsync<IPApiResponse>($"http://ip-api.com/json/{ip}",
                     cancellationToken);
 
-                return response?.CountryCode ?? throw new InvalidOperationException("Error at country lookup!");
+                return response?.CountryCode ?? throw new InvalidOperationException($"Error at country lookup!\n{response}");
             }
             catch (Exception ex)
             {
