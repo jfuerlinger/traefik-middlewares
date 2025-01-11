@@ -1,17 +1,22 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Traefik.Middelware.Api.Caching;
 using Traefik.Middelware.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
 builder.Services.AddHttpClient();
+
+builder.Services.AddOutputCache(options =>
+{
+    options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(60);
+    options.AddPolicy("GeoFilterPolicy", GeoFilterPolicy.Instance);
+});
+
 builder.Services.AddHealthChecks()
-    .AddCheck<GeoFilterService>("IP-API Check");
+                    .AddCheck<GeoFilterService>("IP-API Check");
 
 builder.Services.AddScoped<GeoFilterService>();
 
@@ -41,18 +46,20 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
 
+app.UseHttpsRedirection();
+app.UseOutputCache();
 
 app.MapGet("/geo-filter", async (
     [FromQuery] string ip,
     [FromQuery] string allowedCountries,
+    HttpContext context,
     GeoFilterService geoFilterService) =>
 {
+
     var countries = allowedCountries
                         .Split(',', StringSplitOptions.RemoveEmptyEntries)
                         .Distinct()
@@ -64,8 +71,10 @@ app.MapGet("/geo-filter", async (
     return isAllowed
         ? Results.Ok("allowed")
         : Results.StatusCode(StatusCodes.Status403Forbidden);
+
 })
-.WithName("geo-filter");
+    .WithName("geo-filter")
+    .CacheOutput("GeoFilterPolicy");
 
 app.Run();
 

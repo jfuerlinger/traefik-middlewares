@@ -26,6 +26,7 @@ namespace Traefik.Middelware.Api.Services
 
             try
             {
+                logger.LogInformation($"Fetching country info for ip '{ip}' ...");
                 var response = await httpClient.GetFromJsonAsync<IPApiResponse>($"http://ip-api.com/json/{ip}");
                 return response?.CountryCode ?? throw new InvalidOperationException("Error at country lookup!");
             }
