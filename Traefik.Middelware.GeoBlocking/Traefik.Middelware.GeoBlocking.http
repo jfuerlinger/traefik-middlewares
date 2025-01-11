@@ -1,6 +1,0 @@
-@Traefik.Middelware.GeoBlocking_HostAddress = http://localhost:5010
-
-GET {{Traefik.Middelware.GeoBlocking_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
