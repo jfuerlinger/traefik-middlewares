@@ -9,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddHttpClient();
 
+#pragma warning disable EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+builder.Services.AddHybridCache();
+#pragma warning restore EXTEXP0018 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+
 builder.Services.AddOutputCache(options =>
 {
     options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(60);
@@ -57,7 +61,8 @@ app.MapGet("/geo-filter", async (
     [FromQuery] string ip,
     [FromQuery] string allowedCountries,
     HttpContext context,
-    GeoFilterService geoFilterService) =>
+    GeoFilterService geoFilterService,
+    CancellationToken cancellationToken) =>
 {
 
     var countries = allowedCountries
@@ -66,7 +71,9 @@ app.MapGet("/geo-filter", async (
                         .Select(entry => entry.ToUpper())
                         .Order();
 
-    var isAllowed = await geoFilterService.IsAllowedAsync(ip, countries);
+    var isAllowed = await geoFilterService.IsAllowedAsync(
+        ip, countries,
+        cancellationToken);
 
     return isAllowed
         ? Results.Ok("allowed")
