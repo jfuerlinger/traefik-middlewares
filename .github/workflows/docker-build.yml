@@ -28,5 +28,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
+          file: ./Traefik.Middelware.Api/Dockerfile
           tags: jfuerlinger/traefik-middlewares:latest
           platforms: linux/amd64,linux/arm64
