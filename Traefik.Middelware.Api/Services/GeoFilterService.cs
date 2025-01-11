@@ -1,9 +1,12 @@
-﻿namespace Traefik.Middelware.Api.Services
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+namespace Traefik.Middelware.Api.Services
 {
     public class GeoFilterService(
         IHttpClientFactory httpClientFactory,
-        ILogger<GeoFilterService> logger)
+        ILogger<GeoFilterService> logger) : IHealthCheck
     {
+        private const string HEALTH_CHECK_IP = "8.8.8.8";
 
         public async Task<bool> IsAllowedAsync(
             string ip,
@@ -30,6 +33,21 @@
             {
                 logger.LogError(ex, "Error at country lookup!");
                 throw new InvalidOperationException("Error at country lookup!", ex);
+            }
+        }
+
+        public async Task<HealthCheckResult> CheckHealthAsync(
+            HealthCheckContext context,
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                await GetCountryCodeAsync(HEALTH_CHECK_IP);
+                return HealthCheckResult.Healthy("All good");
+            }
+            catch
+            {
+                return HealthCheckResult.Unhealthy("Error at country lookup!");
             }
         }
 
