@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35507.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Traefik.Middelware.GeoBlocking", "Traefik.Middelware.GeoBlocking\Traefik.Middelware.GeoBlocking.csproj", "{03B8D765-272C-4A48-9650-BA8B16FD1EFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03B8D765-272C-4A48-9650-BA8B16FD1EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B8D765-272C-4A48-9650-BA8B16FD1EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03B8D765-272C-4A48-9650-BA8B16FD1EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03B8D765-272C-4A48-9650-BA8B16FD1EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7985BD63-EF6F-4E36-AEB4-4F23E3DA8104}
+	EndGlobalSection
+EndGlobal
