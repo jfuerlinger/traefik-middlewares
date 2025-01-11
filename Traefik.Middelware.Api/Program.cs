@@ -48,7 +48,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.MapGet("/geo-filter", (
+app.MapGet("/geo-filter", async (
     [FromQuery] string ip,
     [FromQuery] string allowedCountries,
     GeoFilterService geoFilterService) =>
@@ -59,7 +59,11 @@ app.MapGet("/geo-filter", (
                         .Select(entry => entry.ToUpper())
                         .Order();
 
-    return geoFilterService.IsAllowedAsync(ip, countries);
+    var isAllowed = await geoFilterService.IsAllowedAsync(ip, countries);
+
+    return isAllowed
+        ? Results.Ok("allowed")
+        : Results.StatusCode(StatusCodes.Status403Forbidden);
 })
 .WithName("geo-filter");
 
