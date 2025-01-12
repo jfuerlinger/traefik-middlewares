@@ -71,6 +71,12 @@ app.MapGet("/geo-filter", async (
 
     logger.LogDebug($"Checking IP '{ip}' against '{allowedCountries}' ...");
 
+    if (ip.StartsWith("192.168.") || ip.StartsWith("172."))
+    {
+        logger.LogInformation("Allowed - internal ip");
+        return Results.Ok("allowed - internal ip");
+    }
+
     var countries = allowedCountries
                         .Split(',', StringSplitOptions.RemoveEmptyEntries)
                         .Distinct()

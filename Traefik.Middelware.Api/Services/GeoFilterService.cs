@@ -29,6 +29,11 @@ namespace Traefik.Middelware.Api.Services
 
             logger.LogInformation($"IP '{ip}' from '{country}' is {(isAllowed ? "allowed" : "not allowed")}");
 
+            if (!isAllowed)
+            {
+                logger.LogWarning($"Illegal Access from '{ip}' ({country}) detected!");
+            }
+
             return isAllowed;
         }
 
