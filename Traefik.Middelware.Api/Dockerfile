@@ -26,5 +26,15 @@ RUN dotnet publish "./Traefik.Middelware.Api.csproj" -c $BUILD_CONFIGURATION -o 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
+
+# Temporarily switch to root user to install curl and clean up
+USER root
+
+# Install curl and clean up
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Switch back to the original user (if needed)
+USER $APP_UID
+
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Traefik.Middelware.Api.dll"]
