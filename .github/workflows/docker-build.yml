@@ -15,10 +15,6 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
-      - name: Verify QEMU
-        run: |
-          docker run --rm --platform linux/arm64 alpine uname -m
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -27,22 +23,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build and push for amd64
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          file: ./Traefik.Middelware.Api/Dockerfile
-          tags: jfuerlinger/traefik-middlewares:amd64-latest
-          platforms: linux/amd64
-
-      - name: Build and push for arm64
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          file: ./Traefik.Middelware.Api/Dockerfile
-          tags: jfuerlinger/traefik-middlewares:arm64-latest
-          platforms: linux/arm64
 
       - name: Build and push
         uses: docker/build-push-action@v4
