@@ -53,8 +53,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-
-app.UseHttpsRedirection();
 app.UseOutputCache();
 
 app.MapGet("/geo-filter", async (
