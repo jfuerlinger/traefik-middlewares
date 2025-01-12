@@ -28,6 +28,22 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Build and push for amd64
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          file: ./Traefik.Middelware.Api/Dockerfile
+          tags: jfuerlinger/traefik-middlewares:amd64-latest
+          platforms: linux/amd64
+
+      - name: Build and push for arm64
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          file: ./Traefik.Middelware.Api/Dockerfile
+          tags: jfuerlinger/traefik-middlewares:arm64-latest
+          platforms: linux/arm64
+
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
