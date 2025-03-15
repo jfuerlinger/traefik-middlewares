@@ -2,6 +2,8 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+# Set a default UID to avoid permission issues
+ARG APP_UID=1000
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
@@ -30,10 +32,12 @@ WORKDIR /app
 # Temporarily switch to root user to install curl and clean up
 USER root
 
-# Install curl and clean up
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+# Install curl and clean up - handle apt differently on arm and amd64
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
 
-# Switch back to the original user (if needed)
+# Switch back to the original user
 USER $APP_UID
 
 COPY --from=publish /app/publish .
