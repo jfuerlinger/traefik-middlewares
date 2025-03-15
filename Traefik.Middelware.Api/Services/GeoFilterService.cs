@@ -46,17 +46,25 @@ namespace Traefik.Middelware.Api.Services
                 throw new ArgumentNullException(nameof(ip));
             }
 
+            bool isLoggingForRequestEnabled = !ip.Equals("8.8.8.8");
+
             var httpClient = httpClientFactory.CreateClient();
 
             try
             {
-                logger.LogInformation($"Fetching country info for ip '{ip}' ...");
+                if (isLoggingForRequestEnabled)
+                {
+                    logger.LogInformation($"Fetching country info for ip '{ip}' ...");
+                }
 
                 var response = await httpClient.GetFromJsonAsync<IPApiResponse>($"http://ip-api.com/json/{ip}",
                     cancellationToken);
 
                 var country = response?.CountryCode ?? throw new InvalidOperationException($"Error at country lookup!\n{response}");
-                logger.LogInformation($"  -> '{country}'");
+                if (isLoggingForRequestEnabled)
+                {
+                    logger.LogInformation($"  -> '{country}'");
+                }
                 return country;
             }
             catch (Exception ex)

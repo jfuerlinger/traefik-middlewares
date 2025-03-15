@@ -73,7 +73,7 @@ app.MapGet("/geo-filter", async (
 
     if (ip.StartsWith("192.168.") || ip.StartsWith("172."))
     {
-        logger.LogInformation("Allowed - internal ip");
+        logger.LogInformation($"Allowed - internal ip ('{ip}')");
         return Results.Ok("allowed - internal ip");
     }
 
