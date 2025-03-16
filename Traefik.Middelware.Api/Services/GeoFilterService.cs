@@ -8,7 +8,7 @@ namespace Traefik.Middelware.Api.Services
         HybridCache cache,
         ILogger<GeoFilterService> logger) : IHealthCheck
     {
-        private const string HEALTH_CHECK_IP = "8.8.8.8";
+        private const string _healthCheckIp = "8.8.8.8";
 
         public async Task<bool> IsAllowedAsync(
             string ip,
@@ -80,7 +80,7 @@ namespace Traefik.Middelware.Api.Services
         {
             try
             {
-                await GetCountryCodeAsync(HEALTH_CHECK_IP, cancellationToken);
+                await GetCountryCodeAsync(_healthCheckIp, cancellationToken);
                 return HealthCheckResult.Healthy("All good");
             }
             catch
