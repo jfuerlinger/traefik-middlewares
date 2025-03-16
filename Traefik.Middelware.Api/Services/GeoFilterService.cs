@@ -27,11 +27,12 @@ namespace Traefik.Middelware.Api.Services
 
             var isAllowed = allowedCountries.Contains(country);
 
-            logger.LogInformation($"IP '{ip}' from '{country}' is {(isAllowed ? "allowed" : "not allowed")}");
+            logger.LogInformation("IP '{ip}' from '{country}' is '{isAllowed}'",
+                ip, country, (isAllowed ? "allowed" : "not allowed"));
 
             if (!isAllowed)
             {
-                logger.LogWarning($"Illegal Access from '{ip}' ({country}) detected!");
+                logger.LogWarning("Illegal Access from '{ip}' ({country}) detected!", ip, country);
             }
 
             return isAllowed;
@@ -54,7 +55,7 @@ namespace Traefik.Middelware.Api.Services
             {
                 if (isLoggingForRequestEnabled)
                 {
-                    logger.LogInformation($"Fetching country info for ip '{ip}' ...");
+                    logger.LogInformation("Fetching country info for ip '{ip}' ...", ip);
                 }
 
                 var response = await httpClient.GetFromJsonAsync<IPApiResponse>($"http://ip-api.com/json/{ip}",
@@ -63,7 +64,7 @@ namespace Traefik.Middelware.Api.Services
                 var country = response?.CountryCode ?? throw new InvalidOperationException($"Error at country lookup!\n{response}");
                 if (isLoggingForRequestEnabled)
                 {
-                    logger.LogInformation($"  -> '{country}'");
+                    logger.LogInformation("  -> '{country}'", country);
                 }
                 return country;
             }
