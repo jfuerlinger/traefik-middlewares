@@ -21,8 +21,7 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080",
-        "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=551882de-e2c8-42c9-ac1e-e47917ca104b;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=3f1053c1-343f-4d21-bb6b-0573d7be652e"
+        "ASPNETCORE_HTTP_PORTS": "8080"
       },
       "publishAllPorts": true,
       "useSSL": true
