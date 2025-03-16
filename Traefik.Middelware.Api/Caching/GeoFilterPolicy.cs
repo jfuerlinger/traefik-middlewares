@@ -13,7 +13,7 @@ public sealed class GeoFilterPolicy : IOutputCachePolicy
 
     ValueTask IOutputCachePolicy.CacheRequestAsync(
         OutputCacheContext context,
-        CancellationToken cancellationToken)
+        CancellationToken cancellation)
     {
         var attemptOutputCaching = AttemptOutputCaching(context);
         context.EnableOutputCaching = true;
@@ -28,13 +28,13 @@ public sealed class GeoFilterPolicy : IOutputCachePolicy
     }
 
     ValueTask IOutputCachePolicy.ServeFromCacheAsync
-        (OutputCacheContext context, CancellationToken cancellationToken)
+        (OutputCacheContext context, CancellationToken cancellation)
     {
         return ValueTask.CompletedTask;
     }
 
     ValueTask IOutputCachePolicy.ServeResponseAsync
-        (OutputCacheContext context, CancellationToken cancellationToken)
+        (OutputCacheContext context, CancellationToken cancellation)
     {
         var response = context.HttpContext.Response;
 
