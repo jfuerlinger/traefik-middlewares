@@ -28,8 +28,19 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v4
+        id: build-push
         with:
           push: true
           file: ./Traefik.Middelware.Api/Dockerfile
           tags: jfuerlinger/traefik-middlewares:latest
           platforms: linux/amd64,linux/arm64
+          outputs: |
+            imageDigest: ${{ steps.build-push.outputs.digest }}
+
+      - name: Tag and Push platform specific images
+        if: steps.build-push.outputs.imageDigest
+        run: |
+          docker tag jfuerlinger/traefik-middlewares:latest jfuerlinger/traefik-middlewares:linux-amd64
+          docker tag jfuerlinger/traefik-middlewares:latest jfuerlinger/traefik-middlewares:linux-arm64
+          docker push jfuerlinger/traefik-middlewares:linux-amd64
+          docker push jfuerlinger/traefik-middlewares:linux-arm64
